@@ -10,8 +10,7 @@
 
 | Branch | Version | Status |
 | :--- | :--- | :--- |
-| `main` | `1.0.0` | ![passing](https://img.shields.io/badge/build-passing-brightgreen) |
-| `develop` | `1.1.0-dev` | ![passing](https://img.shields.io/badge/build-passing-brightgreen) |
+| `master` | `1.0.0` | ![passing](https://img.shields.io/badge/build-passing-brightgreen) |
 
 | Platform | Docker | Python |
 | :--- | :--- | :--- |
@@ -30,31 +29,7 @@ El sistema funciona mediante un pipeline de visión artificial donde MediaPipe p
 
 ## Arquitectura
 
-```mermaid
-graph TD
-    A[Webcam] --> B[MediaPipe Landmarker]
-    B --> C{Gesture Detection}
-    C -- "Peace Sign" --> D{Timer & Cooldown}
-    D -- "Condition Met" --> E[Screen Capture]
-    E --> F[Save to /capturas]
-    C -- "Other" --> B
-    D -- "Wait" --> B
-    
-    subgraph Docker Container
-    B
-    C
-    D
-    E
-    F
-    end
-    
-    subgraph Host System
-    A
-    G[X11 Server / Display]
-    end
-    
-    E -.-> G
-```
+![Diagrama de Arquitectura](arquitecture.jpeg)
 
 ## Características Principales
 

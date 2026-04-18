@@ -42,6 +42,7 @@ Una vez tengas la información, genera EXCLUSIVAMENTE el código Markdown siguie
 | Linux (x86_64) | `[Versión]` | `[Versión]` |
 | macOS (ARM64) | `[Versión]` | `[Versión]` |
 | Windows (x86_64) | `[Versión]` | `[Versión]` |
+| Android (ARM64) | `[Versión]` | `[Versión]` |
 
 * **Docs:** [Enlace a documentación]
 * **Website:** [Enlace a web]
@@ -54,9 +55,8 @@ El sistema funciona mediante [Explicar brevemente la arquitectura núcleo: ej. "
 
 ## Arquitectura
 
-```mermaid
-[Diagrama de arquitectura en Mermaid]
-```
+![Diagrama de Arquitectura](assets/architecture.png)
+*(Nota: Añade tu diagrama de flujo aquí)*
 
 ## Características Principales
 
