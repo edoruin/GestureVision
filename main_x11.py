@@ -63,6 +63,11 @@ def main():
         nonlocal permission_granted
         if event == cv2.EVENT_LBUTTONDOWN:
             if 200 <= x <= 400 and 200 <= y <= 250:
+                try:
+                    import subprocess
+                    subprocess.run(["xhost", "+local:docker"], check=True, capture_output=True)
+                except Exception as e:
+                    print(f"Error running xhost: {e}")
                 permission_granted = True
 
     options = vision.HandLandmarkerOptions(

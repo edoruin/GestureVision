@@ -20,20 +20,14 @@ Gesture Vision es una herramienta de automatización basada en visión artificia
 
 Para ejecutar Gesture Vision, sigue estos pasos en tu terminal:
 
-### 1. Permitir acceso al servidor gráfico
-Para que el contenedor pueda mostrar la ventana de la cámara en tu pantalla, debes ejecutar:
-```bash
-xhost +local:docker
-```
-
-### 2. Iniciar la aplicación
+### 1. Iniciar la aplicación
 Desde la raíz del proyecto, ejecuta el siguiente comando para construir e iniciar el contenedor:
 ```bash
 docker compose up --build
 ```
 
-### 3. Interactuar con el sistema
-- **Permiso**: Al iniciar, verás una ventana con la cámara. Haz clic en el botón **"ACEPTAR"** para habilitar la función de capturas.
+### 2. Interactuar con el sistema
+- **Permiso**: Al iniciar, verás una ventana con la cámara. Haz clic en el botón **"ACEPTAR"** para habilitar la función de capturas y configurar los permisos del servidor gráfico.
 - **Gesto**: Realiza el signo de la paz frente a la cámara durante 1 segundo.
 - **Salir**: Presiona la tecla `q` en la ventana de video para cerrar la aplicación.
 

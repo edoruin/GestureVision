@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     wget \
     scrot \
     gnome-screenshot \
+    x11-xserver-utils \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
