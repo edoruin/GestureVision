@@ -65,6 +65,14 @@ El sistema funciona mediante [Explicar brevemente la arquitectura núcleo: ej. "
 * **[Atributo 3, ej: Escalable]:** [Explicación técnica de por qué lo es].
 * **[Atributo 4, ej: Flexible]:** [Explicación técnica de por qué lo es].
 
+## Consumo de Recursos
+
+| Recurso | Consumo Promedio | Pico Máximo |
+| :--- | :--- | :--- |
+| CPU | `[X%]` | `[X%]` |
+| RAM | `[X MB]` | `[X MB]` |
+| Otros | `[X]` | `[X]` |
+
 ## Quick Start
 
 ```bash
