@@ -17,6 +17,7 @@
 | Linux (x86_64) | `Latest` | `3.x` |
 | macOS (ARM64) | `N/A` | `N/A` |
 | Windows (x86_64) | `N/A` | `N/A` |
+| Android (ARM64) | `N/A` | `N/A` |
 
 * **Docs:** [Enlace a documentación]
 * **Website:** [Enlace a web]
@@ -29,7 +30,7 @@ El sistema funciona mediante un pipeline de visión artificial donde MediaPipe p
 
 ## Arquitectura
 
-![Diagrama de Arquitectura](arquitecture.jpeg)
+![Diagrama de Arquitectura](arquitecture.png)
 
 ## Características Principales
 

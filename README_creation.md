@@ -73,6 +73,14 @@ El sistema funciona mediante [Explicar brevemente la arquitectura núcleo: ej. "
 | RAM | `[X MB]` | `[X MB]` |
 | Otros | `[X]` | `[X]` |
 
+## Consumo de Recursos
+
+| Recurso | Consumo Promedio | Pico Máximo |
+| :--- | :--- | :--- |
+| CPU | `[X%]` | `[X%]` |
+| RAM | `[X MB]` | `[X MB]` |
+| Otros | `[X]` | `[X]` |
+
 ## Quick Start
 
 ```bash
