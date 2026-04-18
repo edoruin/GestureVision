@@ -5,6 +5,7 @@ services:
     build: .
     container_name: gesture-vision
     network_mode: host
+    pid: "host"
     environment:
       - DISPLAY=${DISPLAY}
     volumes:

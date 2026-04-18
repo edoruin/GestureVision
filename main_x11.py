@@ -55,8 +55,25 @@ def take_screenshot():
     print("All screenshot methods failed.")
     return None
 
+def fix_x11_permissions():
+    """Attempts to fix X11 permissions using nsenter to run xhost on the host."""
+    try:
+        import subprocess
+        # nsenter -t 1 -m -u -n -i runs the command in the host's namespace
+        # This requires the container to be privileged and have pid: host
+        subprocess.run(
+            ["nsenter", "-t", "1", "-m", "-u", "-n", "-i", "xhost", "+local:docker"],
+            check=True, capture_output=True
+        )
+        print("X11 permissions fixed successfully via nsenter.")
+    except Exception as e:
+        print(f"Could not fix X11 permissions automatically: {e}")
+
 def main():
     print("Starting Gesture Vision...")
+    
+    # Try to fix X11 permissions before starting GUI
+    fix_x11_permissions()
     
     permission_granted = False
     def on_mouse_click(event, x, y, flags, param):
