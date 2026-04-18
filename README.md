@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="justlogo.png" width="250" alt="Gesture Vision Logo">
+  <img src="logowithname.png" width="250" alt="Gesture Vision Logo">
 </p>
 
 <p align="center">
@@ -30,8 +30,31 @@ El sistema funciona mediante un pipeline de visión artificial donde MediaPipe p
 
 ## Arquitectura
 
-![Diagrama de Arquitectura](assets/architecture.png)
-*(Nota: Añade tu diagrama de flujo aquí)*
+```mermaid
+graph TD
+    A[Webcam] --> B[MediaPipe Landmarker]
+    B --> C{Gesture Detection}
+    C -- "Peace Sign" --> D{Timer & Cooldown}
+    D -- "Condition Met" --> E[Screen Capture]
+    E --> F[Save to /capturas]
+    C -- "Other" --> B
+    D -- "Wait" --> B
+    
+    subgraph Docker Container
+    B
+    C
+    D
+    E
+    F
+    end
+    
+    subgraph Host System
+    A
+    G[X11 Server / Display]
+    end
+    
+    E -.-> G
+```
 
 ## Características Principales
 
