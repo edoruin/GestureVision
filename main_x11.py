@@ -30,17 +30,7 @@ def take_screenshot():
 
     path = os.path.join(img_dir, filename)
 
-    # Try mss first
-    try:
-        with mss.mss() as sct:
-            monitor = sct.monitors[1]
-            screenshot = sct.grab(monitor)
-            mss.tools.to_png(screenshot.rgb, screenshot.size, output=path)
-            return path
-    except Exception as e:
-        print(f"mss failed ({e}), trying system tools...")
-
-    # Fallback to system tools
+    # Try system tools first as they usually handle color profiles/themes better in X11
     tools = [
         ["gnome-screenshot", "-f", path],
         ["scrot", path],
@@ -48,9 +38,21 @@ def take_screenshot():
     for tool in tools:
         try:
             subprocess.run(tool, check=True, capture_output=True)
+            print(f"Screenshot captured using {tool[0]}")
             return path
         except (subprocess.CalledProcessError, FileNotFoundError):
             continue
+
+    # Fallback to mss
+    try:
+        with mss.mss() as sct:
+            monitor = sct.monitors[1]
+            screenshot = sct.grab(monitor)
+            mss.tools.to_png(screenshot.rgb, screenshot.size, output=path)
+            print("Screenshot captured using mss")
+            return path
+    except Exception as e:
+        print(f"mss failed ({e})")
     
     print("All screenshot methods failed.")
     return None
