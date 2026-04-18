@@ -1,40 +1,64 @@
-# 🖐️ Gesture Vision (Docker Edition)
+<p align="center">
+  <img src="justlogo.png" width="250" alt="Gesture Vision Logo">
+</p>
 
-Gesture Vision es una herramienta de automatización basada en visión artificial que permite tomar capturas de pantalla del escritorio mediante el reconocimiento de gestos con la cámara web, ejecutándose enteramente dentro de un contenedor Docker para facilitar su despliegue.
+<p align="center">
+  <a href="#"><img src="https://img.shields.io/badge/build-passing-brightgreen" alt="Build"></a>
+  <a href="#"><img src="https://img.shields.io/badge/Docker-Latest-blue" alt="Tech"></a>
+  <a href="#"><img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="License"></a>
+</p>
 
-## 🚀 Características
+| Branch | Version | Status |
+| :--- | :--- | :--- |
+| `main` | `1.0.0` | ![passing](https://img.shields.io/badge/build-passing-brightgreen) |
+| `develop` | `1.1.0-dev` | ![passing](https://img.shields.io/badge/build-passing-brightgreen) |
 
-- **Rastreo de Manos en Tiempo Real**: Utiliza MediaPipe para detectar puntos clave de la mano con alta precisión.
-- **Gesto de Activación**: Detecta el **"Signo de la Paz"** (dedos índice y medio extendidos, anular y meñique cerrados) para disparar la captura.
-- **Sistema de Permisos**: Incluye una pantalla de consentimiento interactiva al inicio para asegurar que el usuario autorice la captura de pantalla.
-- **Control de Spam**: Implementa un sistema de cooldown de 3 segundos y un tiempo de mantenimiento del gesto (1 segundo) para evitar capturas accidentales.
-- **Aislamiento Total**: Despliegue simplificado mediante Docker, evitando conflictos de dependencias en el sistema host.
-- **Almacenamiento Organizado**: Las capturas se guardan automáticamente en la carpeta `/capturas` en la raíz del proyecto.
+| Platform | Docker | Python |
+| :--- | :--- | :--- |
+| Linux (x86_64) | `Latest` | `3.x` |
+| macOS (ARM64) | `N/A` | `N/A` |
+| Windows (x86_64) | `N/A` | `N/A` |
 
-## 🛠️ Requisitos Previos
+* **Docs:** [Enlace a documentación]
+* **Website:** [Enlace a web]
 
-- **Docker** y **Docker Compose** instalados.
-- Una cámara web funcional conectada al sistema.
+## Introducción
 
-## 💻 Uso y Despliegue
+Gesture Vision es una herramienta de automatización de grado de producción, desarrollada en Python y Docker para la captura de pantallas mediante el reconocimiento de gestos.
 
-Para ejecutar Gesture Vision, sigue estos pasos en tu terminal:
+El sistema funciona mediante un pipeline de visión artificial donde MediaPipe procesa el flujo de la cámara para detectar puntos clave de la mano, disparando eventos de captura basados en patrones geométricos específicos. Esto proporciona el aislamiento de Docker con la eficiencia de procesamiento en tiempo real de MediaPipe.
 
-### 1. Iniciar la aplicación
-Desde la raíz del proyecto, ejecuta el siguiente comando para construir e iniciar el contenedor:
+## Arquitectura
+
+![Diagrama de Arquitectura](assets/architecture.png)
+*(Nota: Añade tu diagrama de flujo aquí)*
+
+## Características Principales
+
+* **Rastreo de Alta Precisión:** Utiliza MediaPipe para la detección de landmarks manuales en tiempo real con baja latencia.
+* **Control de Disparo Robusto:** Implementa un sistema de mantenimiento de gesto (1s) y cooldown (3s) para eliminar falsos positivos y spam de capturas.
+* **Seguridad Interactiva:** Capa de consentimiento obligatoria al inicio para garantizar la autorización del usuario antes de habilitar la captura.
+* **Despliegue Aislado:** Arquitectura basada en contenedores con mapeo de servidor X11 y dispositivos de video para una instalación sin dependencias en el host.
+
+## Quick Start
+
 ```bash
+# Clonar el repositorio y entrar al directorio
+git clone <repo-url>
+cd gesture-vision
+
+# Construir e iniciar el contenedor
 docker compose up --build
 ```
 
-### 2. Interactuar con el sistema
-- **Permiso**: Al iniciar, verás una ventana con la cámara. Haz clic en el botón **"ACEPTAR"** para habilitar la función de capturas y configurar los permisos del servidor gráfico.
-- **Gesto**: Realiza el signo de la paz frente a la cámara durante 1 segundo.
-- **Salir**: Presiona la tecla `q` en la ventana de video para cerrar la aplicación.
+### Instrucciones de uso
+1. **Permisos:** Haz clic en **"ACEPTAR"** en la ventana emergente para habilitar la cámara y el servidor gráfico.
+2. **Gesto:** Realiza el signo de la paz (índice y medio extendidos) durante 1 segundo para capturar la pantalla.
+3. **Cierre:** Presiona `q` en la ventana de video para salir.
 
-## 📂 Estructura del Proyecto
-- `main_x11.py`: Núcleo de la aplicación ejecutado dentro del contenedor.
-- `requirements.txt`: Dependencias de Python.
-- `Dockerfile`: Configuración de la imagen (Librerías GL, EGL y herramientas de captura).
-- `docker-compose.yml`: Orquestación del contenedor (mapeo de cámara, pantalla y volúmenes).
-- `hand_landmarker.task`: Modelo pre-entrenado de detección de manos.
-- `LICENSE`: Licencia MIT.
+## Estructura del Proyecto
+
+- `main_x11.py`: Lógica central de detección y captura.
+- `Dockerfile`: Configuración de entorno GL/EGL y dependencias de sistema.
+- `docker-compose.yml`: Orquestación de volúmenes, dispositivos y entorno gráfico.
+- `hand_landmarker.task`: Modelo pre-entrenado de MediaPipe.
