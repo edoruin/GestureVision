@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gesturevision"
-version = "0.3.0"
+version = "0.3.1"
 description = "A gesture-based screen capture and keyboard shortcut automation system using MediaPipe and FastAPI"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -18,7 +18,7 @@ classifiers = [
     "Operating System :: POSIX :: Linux",
     "Intended Audience :: End Users/Desktop",
 ]
-license = {text = "MIT"}
+license = "MIT"
 dependencies = [
     "fastapi>=0.109.0",
     "uvicorn>=0.27.0",
