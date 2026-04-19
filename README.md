@@ -18,100 +18,100 @@
 | macOS (ARM64) | `N/A` | `N/A` |
 | Windows (x86_64) | `N/A` | `N/A` |
 
-* **Docs:** [Enlace a documentación]
+* **Docs:** [Link to documentation]
 
-## Introducción
+## Introduction
 
-Gesture Vision es un sistema de control por gestos, desarrollado en Python para automatizar acciones del escritorio mediante el reconocimiento de gestos en tiempo real.
+Gesture Vision is a gesture control system, developed in Python to automate desktop actions through real-time gesture recognition.
 
-El sistema funciona mediante un pipeline de visión artificial donde MediaPipe procesa el flujo de la cámara para detectar puntos clave de la mano, coordinado por un backend asíncrono en FastAPI. Esto proporciona un control preciso de eventos con un impacto mínimo en los recursos del sistema.
+The system works through a computer vision pipeline where MediaPipe processes the camera stream to detect hand landmarks, coordinated by an asynchronous FastAPI backend. This provides precise event control with minimal impact on system resources.
 
-## Arquitectura
+## Architecture
 
-![Arquitectura](architecture.png)
+![Architecture](architecture.png)
 
-## Características Principales
+## Main Features
 
-* **Rastreo de Alta Precisión:** Implementación de MediaPipe Hand Landmarker para la detección de puntos clave manuales con baja latencia.
-* **Control de Disparo Robusto:** Sistema de validación basado en tiempo de mantenimiento del gesto y periodos de cooldown para eliminar falsos positivos.
-* **Gestos de Barrido (Swipe):** Cambio de workspace con movimientos horizontales de la mano - izquierda/derecha.
-* **Captura de Pantalla:** Detección del gesto de "paz" (índice y medio levantados) para tomar capturas.
-* **Modo Invisible (Background):** Operación totalmente en segundo plano sin ventanas de previsualización, optimizando el uso de la GPU/CPU.
-* **Atajos de Teclado:** Asocia gestos a atajos del sistema como ctrl+shift+q para ejecutar cualquier acción.
-* **Soporte X11 y Wayland:** Detecta automáticamente si usar xdotool (X11) o ydotool (Wayland).
-* **Notificaciones Nativas:** Integración con el sistema de alertas del escritorio para confirmar acciones instantáneamente.
-* **Despliegue Nativo:** Instalación simplificada vía `pip` con comandos CLI dedicados para la gestión del servicio.
-* **Panel Web:** Interfaz gráfica para configurar gestos, atajos y tiempos.
+* **High Precision Tracking:** MediaPipe Hand Landmarker implementation for low-latency hand landmark detection.
+* **Robust Trigger Control:** Validation system based on gesture hold time and cooldown periods to eliminate false positives.
+* **Swipe Gestures:** Workspace switching with horizontal hand movements - left/right.
+* **Screenshot Capture:** Detection of the "peace" gesture (index and middle fingers up) to take screenshots.
+* **Invisible Mode (Background):** Fully background operation without preview windows, optimizing GPU/CPU usage.
+* **Keyboard Shortcuts:** Associate gestures with system shortcuts like ctrl+shift+q to execute any action.
+* **X11 and Wayland Support:** Automatically detects whether to use xdotool (X11) or ydotool (Wayland).
+* **Native Notifications:** Integration with desktop notification system to instantly confirm actions.
+* **Native Deployment:** Simplified installation via `pip` with dedicated CLI commands for service management.
+* **Web Panel:** Graphical interface to configure gestures, shortcuts, and timing.
 
 ## Quick Start
 
-### 1. Instalación
+### 1. Installation
 ```bash
-# Instalar desde PyPI
+# Install from PyPI
 pip install gesturevision
 ```
 
-### 2. Ejecución
+### 2. Run
 ```bash
-# La primera vez: instala dependencias del sistema automáticamente
+# First time: automatically install system dependencies
 gesturevision-start --install-deps
 
-# Iniciar el sistema
+# Start the system
 gesturevision-start
 ```
 
-### 4. Panel de Control
-Acceda al panel web: **http://localhost:8080**
+### 4. Control Panel
+Access the web panel: **http://localhost:8080**
 
-Allí podrá:
-- Iniciar/detener el sistema
-- Configurar tiempos de gesto y cooldown
-- Agregar gestos y asociar atajos de teclado
+There you can:
+- Start/stop the system
+- Configure gesture and cooldown timing
+- Add gestures and associate keyboard shortcuts
 
-## Tipos de Gestos Disponibles
+## Available Gesture Types
 
-| Gesto | Descripción |
+| Gesture | Description |
 | :--- | :--- |
-| ✌️ **Paz** | Índice y medio arriba |
-| ✊ **Puño** | Mano cerrada |
-| ✋ **Mano abierta** | 5 dedos extendidos |
-| 👍 **Tres dedos** | Índice, medio y anular arriba |
-| ☝️ **Apuntar** | Solo índice arriba |
+| ✌️ **Peace** | Index and middle fingers up |
+| ✊ **Fist** | Closed hand |
+| ✋ **Open Hand** | 5 fingers extended |
+| 👍 **Three Fingers** | Index, middle, and ring fingers up |
+| ☝️ **Point** | Only index finger up |
 
-## Atajos de Teclado Soportados
+## Supported Keyboard Shortcuts
 
- Puede usar cualquiera de los atajos predefinidos o escribir el propio:
+You can use any of the predefined shortcuts or write your own:
 
-- Captura de pantalla: `Print`
-- Cerrar ventana: `alt+F4`
-- Minimizar todo: `super+d`
-- Bloquear pantalla: `super+l`
-- Cambiar ventana: `alt+Tab`
-- Nueva pestaña: `ctrl+t`
-- Cerrar pestaña: `ctrl+w`
-- Copiar/Pegar: `ctrl+c` / `ctrl+v`
-- Y muchos más...
+- Screenshot: `Print`
+- Close window: `alt+F4`
+- Minimize all: `super+d`
+- Lock screen: `super+l`
+- Switch window: `alt+Tab`
+- New tab: `ctrl+t`
+- Close tab: `ctrl+w`
+- Copy/Paste: `ctrl+c` / `ctrl+v`
+- And many more...
 
-## Estructura del Proyecto
+## Project Structure
 
-- `src/gesturevision/main_vision.py`: Motor de detección de gestos y captura.
-- `src/gesturevision/api/`: Backend FastAPI para control y configuración.
-- `src/gesturevision/static/`: Interfaz de usuario del panel de control.
-- `pyproject.toml`: Definición de dependencias y entry points del paquete.
-- `gesturevision/assets/hand_landmarker.task`: Modelo de IA pre-entrenado.
+- `src/gesturevision/main_vision.py`: Gesture detection and capture engine.
+- `src/gesturevision/api/`: FastAPI backend for control and configuration.
+- `src/gesturevision/static/`: Control panel user interface.
+- `pyproject.toml`: Package dependencies and entry points definition.
+- `gesturevision/assets/hand_landmarker.task`: Pre-trained AI model.
 
-## Configuración
+## Configuration
 
-Los ajustes se almacenan en: `~/gesturevision/config.json`
+Settings are stored in: `~/gesturevision/config.json`
 
-Estructura:
+Structure:
 ```json
 {
   "gesture_hold_seconds": 1.0,
   "cooldown_seconds": 1.5,
   "gestures": [
     {
-      "name": "Paz (captura)",
+      "name": "Peace (screenshot)",
       "gesture_type": "peace_sign",
       "required_hold_seconds": 1.0,
       "enabled": true,
@@ -122,10 +122,10 @@ Estructura:
 }
 ```
 
-## Docker (Opcional)
+## Docker (Optional)
 
 ```bash
 docker-compose up --build
 ```
 
-Acceda al panel en: **http://localhost:8080**
+Access the panel at: **http://localhost:8080**
