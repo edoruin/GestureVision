@@ -49,11 +49,6 @@ El sistema funciona mediante un pipeline de visión artificial donde MediaPipe p
 ```bash
 # Instalar desde PyPI
 pip install gesturevision
-
-# O desde código fuente
-git clone https://github.com/yourusername/gesturevision.git
-cd gesturevision
-pip install -e .
 ```
 
 ### 2. Ejecución
