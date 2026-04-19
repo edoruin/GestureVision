@@ -28,7 +28,7 @@ El sistema funciona mediante un pipeline de visión artificial donde MediaPipe p
 
 ## Arquitectura
 
-![Arquitectura](arquitecture.png)
+![Arquitectura](src/gesturevision/assets/architecture.png)
 
 ## Características Principales
 

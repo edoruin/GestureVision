@@ -1,0 +1,23 @@
+{
+  "gesture_hold_seconds": 1.0,
+  "cooldown_seconds": 3.0,
+  "gestures": [
+    {
+      "name": "peace_sign",
+      "landmarks": [
+        {
+          "index": 8,
+          "x_offset": 0.0,
+          "y_offset": 0.0
+        },
+        {
+          "index": 12,
+          "x_offset": 0.0,
+          "y_offset": 0.0
+        }
+      ],
+      "required_hold_seconds": 1.0,
+      "enabled": true
+    }
+  ]
+}
