@@ -45,26 +45,20 @@ El sistema funciona mediante un pipeline de visión artificial donde MediaPipe p
 
 ## Quick Start
 
-### 1. Dependencias del Sistema
-Instale las librerías necesarias para OpenCV, notificaciones y control de escritorio:
+### 1. Instalación
 ```bash
-sudo apt-get update && sudo apt-get install -y libgl1 libglib2.0-0 libnotify-bin xdotool ydotool gnome-screenshot scrot
-```
-
-### 2. Instalación
-```bash
-# Instalar directamente desde PyPI
+# Instalar desde PyPI
 pip install gesturevision
 
-# O desde el código fuente
+# O desde código fuente
 git clone https://github.com/yourusername/gesturevision.git
 cd gesturevision
 pip install -e .
 ```
 
-### 3. Primeira Ejecución
+### 2. Ejecución
 ```bash
-# Instalar dependencias del sistema (opcional)
+# La primera vez: instala dependencias del sistema automáticamente
 gesturevision-start --install-deps
 
 # Iniciar el sistema
