@@ -28,7 +28,7 @@ El sistema funciona mediante un pipeline de visión artificial donde MediaPipe p
 
 ## Arquitectura
 
-![Diagrama de Arquitectura](arquitecture.png)
+![Arquitectura](arquitecture.png)
 
 ## Características Principales
 
