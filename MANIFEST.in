@@ -1,0 +1,4 @@
+recursive-include src/gesturevision/assets *
+recursive-include src/gesturevision/static *
+include README.md
+include LICENSE

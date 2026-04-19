@@ -4,29 +4,27 @@
 
 <p align="center">
   <a href="#"><img src="https://img.shields.io/badge/build-passing-brightgreen" alt="Build"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Docker-Latest-blue" alt="Tech"></a>
+  <a href="#"><img src="https://img.shields.io/badge/Python-3.12-blue" alt="Tech"></a>
   <a href="#"><img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="License"></a>
 </p>
 
 | Branch | Version | Status |
 | :--- | :--- | :--- |
-| `master` | `1.0.0` | ![passing](https://img.shields.io/badge/build-passing-brightgreen) |
+| `master` | `0.3.0` | ![passing](https://img.shields.io/badge/build-passing-brightgreen) |
 
-| Platform | Docker | Python |
+| Platform | Python | System Dependencies |
 | :--- | :--- | :--- |
-| Linux (x86_64) | `Latest` | `3.x` |
+| Linux (X11/Wayland) | `3.12+` | `libgl1`, `libglib2.0-0`, `notify-send`, `xdotool`, `ydotool` |
 | macOS (ARM64) | `N/A` | `N/A` |
 | Windows (x86_64) | `N/A` | `N/A` |
-| Android (ARM64) | `N/A` | `N/A` |
 
 * **Docs:** [Enlace a documentación]
-* **Website:** [Enlace a web]
 
 ## Introducción
 
-Gesture Vision es una herramienta de automatización de grado de producción, desarrollada en Python y Docker para la captura de pantallas mediante el reconocimiento de gestos.
+Gesture Vision es un sistema de control por gestos, desarrollado en Python para automatizar acciones del escritorio mediante el reconocimiento de gestos en tiempo real.
 
-El sistema funciona mediante un pipeline de visión artificial donde MediaPipe procesa el flujo de la cámara para detectar puntos clave de la mano, disparando eventos de captura basados en patrones geométricos específicos. Esto proporciona el aislamiento de Docker con la eficiencia de procesamiento en tiempo real de MediaPipe.
+El sistema funciona mediante un pipeline de visión artificial donde MediaPipe procesa el flujo de la cámara para detectar puntos clave de la mano, coordinado por un backend asíncrono en FastAPI. Esto proporciona un control preciso de eventos con un impacto mínimo en los recursos del sistema.
 
 ## Arquitectura
 
@@ -34,30 +32,111 @@ El sistema funciona mediante un pipeline de visión artificial donde MediaPipe p
 
 ## Características Principales
 
-* **Rastreo de Alta Precisión:** Utiliza MediaPipe para la detección de landmarks manuales en tiempo real con baja latencia.
-* **Control de Disparo Robusto:** Implementa un sistema de mantenimiento de gesto (1s) y cooldown (3s) para eliminar falsos positivos y spam de capturas.
-* **Seguridad Interactiva:** Capa de consentimiento obligatoria al inicio para garantizar la autorización del usuario antes de habilitar la captura.
-* **Despliegue Aislado:** Arquitectura basada en contenedores con mapeo de servidor X11 y dispositivos de video para una instalación sin dependencias en el host.
+* **Rastreo de Alta Precisión:** Implementación de MediaPipe Hand Landmarker para la detección de puntos clave manuales con baja latencia.
+* **Control de Disparo Robusto:** Sistema de validación basado en tiempo de mantenimiento del gesto y periodos de cooldown para eliminar falsos positivos.
+* **Gestos de Barrido (Swipe):** Cambio de workspace con movimientos horizontales de la mano - izquierda/derecha.
+* **Captura de Pantalla:** Detección del gesto de "paz" (índice y medio levantados) para tomar capturas.
+* **Modo Invisible (Background):** Operación totalmente en segundo plano sin ventanas de previsualización, optimizando el uso de la GPU/CPU.
+* **Atajos de Teclado:** Asocia gestos a atajos del sistema como ctrl+shift+q para ejecutar cualquier acción.
+* **Soporte X11 y Wayland:** Detecta automáticamente si usar xdotool (X11) o ydotool (Wayland).
+* **Notificaciones Nativas:** Integración con el sistema de alertas del escritorio para confirmar acciones instantáneamente.
+* **Despliegue Nativo:** Instalación simplificada vía `pip` con comandos CLI dedicados para la gestión del servicio.
+* **Panel Web:** Interfaz gráfica para configurar gestos, atajos y tiempos.
 
 ## Quick Start
 
+### 1. Dependencias del Sistema
+Instale las librerías necesarias para OpenCV, notificaciones y control de escritorio:
 ```bash
-# Clonar el repositorio y entrar al directorio
-git clone <repo-url>
-cd gesture-vision
-
-# Construir e iniciar el contenedor
-docker compose up --build
+sudo apt-get update && sudo apt-get install -y libgl1 libglib2.0-0 libnotify-bin xdotool ydotool gnome-screenshot scrot
 ```
 
-### Instrucciones de uso
-1. **Permisos:** Haz clic en **"ACEPTAR"** en la ventana emergente para habilitar la cámara y el servidor gráfico.
-2. **Gesto:** Realiza el signo de la paz (índice y medio extendidos) durante 1 segundo para capturar la pantalla.
-3. **Cierre:** Presiona `q` en la ventana de video para salir.
+### 2. Instalación
+```bash
+# Instalar directamente desde PyPI
+pip install gesturevision
+
+# O desde el código fuente
+git clone https://github.com/yourusername/gesturevision.git
+cd gesturevision
+pip install -e .
+```
+
+### 3. Primeira Ejecución
+```bash
+# Instalar dependencias del sistema (opcional)
+gesturevision-start --install-deps
+
+# Iniciar el sistema
+gesturevision-start
+```
+
+### 4. Panel de Control
+Acceda al panel web: **http://localhost:8080**
+
+Allí podrá:
+- Iniciar/detener el sistema
+- Configurar tiempos de gesto y cooldown
+- Agregar gestos y asociar atajos de teclado
+
+## Tipos de Gestos Disponibles
+
+| Gesto | Descripción |
+| :--- | :--- |
+| ✌️ **Paz** | Índice y medio arriba |
+| ✊ **Puño** | Mano cerrada |
+| ✋ **Mano abierta** | 5 dedos extendidos |
+| 👍 **Tres dedos** | Índice, medio y anular arriba |
+| ☝️ **Apuntar** | Solo índice arriba |
+
+## Atajos de Teclado Soportados
+
+ Puede usar cualquiera de los atajos predefinidos o escribir el propio:
+
+- Captura de pantalla: `Print`
+- Cerrar ventana: `alt+F4`
+- Minimizar todo: `super+d`
+- Bloquear pantalla: `super+l`
+- Cambiar ventana: `alt+Tab`
+- Nueva pestaña: `ctrl+t`
+- Cerrar pestaña: `ctrl+w`
+- Copiar/Pegar: `ctrl+c` / `ctrl+v`
+- Y muchos más...
 
 ## Estructura del Proyecto
 
-- `main_x11.py`: Lógica central de detección y captura.
-- `Dockerfile`: Configuración de entorno GL/EGL y dependencias de sistema.
-- `docker-compose.yml`: Orquestación de volúmenes, dispositivos y entorno gráfico.
-- `hand_landmarker.task`: Modelo pre-entrenado de MediaPipe.
+- `src/gesturevision/main_vision.py`: Motor de detección de gestos y captura.
+- `src/gesturevision/api/`: Backend FastAPI para control y configuración.
+- `src/gesturevision/static/`: Interfaz de usuario del panel de control.
+- `pyproject.toml`: Definición de dependencias y entry points del paquete.
+- `gesturevision/assets/hand_landmarker.task`: Modelo de IA pre-entrenado.
+
+## Configuración
+
+Los ajustes se almacenan en: `~/gesturevision/config.json`
+
+Estructura:
+```json
+{
+  "gesture_hold_seconds": 1.0,
+  "cooldown_seconds": 1.5,
+  "gestures": [
+    {
+      "name": "Paz (captura)",
+      "gesture_type": "peace_sign",
+      "required_hold_seconds": 1.0,
+      "enabled": true,
+      "action": "screenshot",
+      "shortcut": null
+    }
+  ]
+}
+```
+
+## Docker (Opcional)
+
+```bash
+docker-compose up --build
+```
+
+Acceda al panel en: **http://localhost:8080**

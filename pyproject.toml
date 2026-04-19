@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gesturevision"
+version = "0.3.0"
+description = "A gesture-based screen capture and keyboard shortcut automation system using MediaPipe and FastAPI"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+keywords = ["gestures", "mediapipe", "automation", "opencv", "fastapi", "keyboard-shortcuts"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: POSIX :: Linux",
+    "Intended Audience :: End Users/Desktop",
+]
+license = {text = "MIT"}
+dependencies = [
+    "fastapi>=0.109.0",
+    "uvicorn>=0.27.0",
+    "python-dotenv>=1.0.0",
+    "opencv-python",
+    "mediapipe",
+    "mss",
+    "numpy",
+    "pydantic",
+]
+
+[project.optional-dependencies]
+dev = [
+    "build",
+    "twine",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[project.urls]
+"Homepage" = "https://github.com/yourusername/gesturevision"
+"Bug Tracker" = "https://github.com/yourusername/gesturevision/issues"
+
+[project.scripts]
+gesturevision-start = "gesturevision.cli:main"
+gesturevision-stop = "gesturevision.stop:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

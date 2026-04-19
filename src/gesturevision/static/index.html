@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GestureVision Control Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                "colors": {
+                    "surface-container-high": "#2a2a2a",
+                    "primary": "#e7bf99",
+                    "on-tertiary-fixed-variant": "#31495b",
+                    "surface-container-lowest": "#0e0e0e",
+                    "error-container": "#93000a",
+                    "tertiary-fixed": "#cce6fc",
+                    "on-primary-fixed": "#2b1701",
+                    "on-surface-variant": "#d2c4b8",
+                    "primary-fixed": "#ffdcbc",
+                    "on-surface": "#e5e2e1",
+                    "surface-dim": "#131313",
+                    "on-secondary-fixed": "#1b1c1b",
+                    "secondary-container": "#464747",
+                    "on-background": "#e5e2e1",
+                    "surface-container-highest": "#353534",
+                    "background": "#131313",
+                    "inverse-surface": "#e5e2e1",
+                    "outline-variant": "#4f453c",
+                    "on-primary-fixed-variant": "#5d4124",
+                    "on-secondary-fixed-variant": "#464747",
+                    "inverse-on-surface": "#313030",
+                    "error": "#ffb4ab",
+                    "on-tertiary-fixed": "#021e2e",
+                    "on-tertiary-container": "#1c3546",
+                    "on-secondary-container": "#b5b5b5",
+                    "on-secondary": "#2f3031",
+                    "outline": "#9b8e84",
+                    "on-primary-container": "#462d11",
+                    "surface-tint": "#e7bf99",
+                    "surface-container-low": "#1c1b1b",
+                    "tertiary-container": "#859eb2",
+                    "surface-bright": "#3a3939",
+                    "on-tertiary": "#1a3344",
+                    "on-error-container": "#ffdad6",
+                    "on-error": "#690005",
+                    "secondary": "#c7c6c6",
+                    "tertiary-fixed-dim": "#b0cadf",
+                    "secondary-fixed-dim": "#c7c6c6",
+                    "tertiary": "#b0cadf",
+                    "inverse-primary": "#775939",
+                    "surface-container": "#201f1f",
+                    "secondary-fixed": "#e3e2e2",
+                    "primary-container": "#b89470",
+                    "surface-variant": "#353534",
+                    "primary-fixed-dim": "#e7bf99",
+                    "on-primary": "#432b10",
+                    "surface": "#131313"
+                },
+                "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+                },
+                "fontFamily": {
+                    "headline": ["Manrope", "sans-serif"],
+                    "body": ["Inter", "sans-serif"],
+                    "label": ["Inter", "sans-serif"]
+                }
+            }
+        }
+    }
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; background-color: #131313; color: #e5e2e1; }
+    h1, h2, h3, h4, h5, h6, .font-headline { font-family: 'Manrope', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .icon-fill { font-variation-settings: 'FILL' 1; }
+    
+    .ghost-border { border: 1px solid rgba(79, 69, 60, 0.15); }
+    .text-gradient {
+        background: linear-gradient(135deg, #e7bf99, #b89470);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .bg-gradient-primary { background: linear-gradient(135deg, #e7bf99, #b89470); }
+    
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 100;
+        align-items: center;
+        justify-content: center;
+    }
+    .modal-overlay.active { display: flex; }
+    
+    .toggle { position: relative; width: 44px; height: 24px; background: #2a2a2a; border-radius: 12px; cursor: pointer; transition: background 0.2s; }
+    .toggle.active { background: #22c55e; }
+    .toggle::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 20px;
+        height: 20px;
+        background: white;
+        border-radius: 50%;
+        transition: transform 0.2s;
+    }
+    .toggle.active::after { transform: translateX(20px); }
+</style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen w-full flex justify-center overflow-y-auto">
+<main class="w-full max-w-4xl pt-12 px-6 pb-24 flex flex-col gap-8">
+<header class="flex flex-col gap-2 mb-4">
+<div class="flex items-center gap-4">
+<img alt="GestureVision Logo" class="h-16 w-auto rounded-lg" src="https://lh3.googleusercontent.com/aida/ADBb0ug6PnAMc9U80A37VrIq61t-YkcKFYdRSlcdngA1iRcdk9ufA0VTblrrKzEQBFl2Byv4Ckkk_4Wgl4GJeHWLxgOSb0aOSTDeAFnOuE8c_zOjjHagC_z5kxxjdDydMd22yOApcp4k85Fx2NmFyb8FMVFzD7jRxuda2YAxUWBEfu4XtQspkmNOt_JuAIiPRo5DNB3Pnki6E3QOq921QHN1uQtST34Efy2PzDfhCMZwmGHc-bwwLXNXLY0gkxEXcSZhoPzRvg"/>
+<div>
+<h1 class="font-headline text-4xl leading-tight tracking-tight text-gradient font-bold">GestureVision</h1>
+<p class="font-label text-secondary mt-1 text-base tracking-wide">Panel de Control</p>
+</div>
+</div>
+</header>
+<div class="bg-surface-container-lowest rounded-xl p-4 ghost-border" id="x11Warning" style="display: none;">
+<div class="flex items-center gap-3 text-error">
+<span class="material-symbols-outlined">warning</span>
+<span class="font-body">Permisos de pantalla necesitados. Ejecuta: <code class="bg-surface-container-low px-2 py-1 rounded">xhost +local:</code></span>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-xl p-8 ghost-border">
+<div class="flex justify-between items-center mb-8">
+<h3 class="font-headline text-xl font-semibold text-on-surface">Estado del Sistema</h3>
+<div class="flex items-center gap-3 bg-surface-container-lowest px-4 py-2 rounded-full ghost-border" id="statusBadge">
+<div class="w-2.5 h-2.5 rounded-full bg-error shadow-[0_0_10px_#ffb4ab]" id="statusDot"></div>
+<span class="font-label text-sm tracking-widest uppercase" id="statusText">Detenido</span>
+</div>
+</div>
+<div class="flex gap-4">
+<button type="button" class="bg-gradient-primary text-on-primary hover:shadow-[0_0_20px_rgba(231,191,153,0.2)] transition-all py-3 px-8 rounded-lg font-label uppercase tracking-widest text-sm font-semibold flex items-center justify-center gap-2" id="startBtn" onclick="startSystem()">
+<span class="material-symbols-outlined">play_arrow</span>
+Iniciar
+</button>
+<button type="button" class="bg-surface-container-lowest text-error border border-error/30 hover:bg-error/10 transition-colors py-3 px-8 rounded-lg font-label uppercase tracking-widest text-sm flex items-center justify-center gap-2" id="stopBtn" onclick="stopSystem()" disabled>
+<span class="material-symbols-outlined">stop</span>
+Detener
+</button>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-xl p-8 ghost-border">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline text-xl font-semibold text-on-surface">Configuración</h3>
+<button type="button" class="bg-surface-container-lowest text-secondary hover:text-primary hover:border-primary/30 transition-colors py-2 px-6 rounded-lg font-label text-sm flex items-center justify-center gap-2 ghost-border" onclick="openConfigModal()">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+Editar
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="font-label text-xs text-secondary tracking-wider uppercase">Tiempo de gesto (segundos)</label>
+<input class="w-full bg-surface-container-lowest border-0 rounded-md py-3 px-4 text-on-surface font-body focus:ring-1 focus:ring-primary/30 transition-all ghost-border" id="gestureHold" readonly type="number" value="1.0"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label text-xs text-secondary tracking-wider uppercase">Tiempo de cooldown (segundos)</label>
+<input class="w-full bg-surface-container-lowest border-0 rounded-md py-3 px-4 text-on-surface font-body focus:ring-1 focus:ring-primary/30 transition-all ghost-border" id="cooldownTime" readonly type="number" value="1.5"/>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-xl p-8 ghost-border flex flex-col gap-6">
+<div class="flex justify-between items-center">
+<h3 class="font-headline text-xl font-semibold text-on-surface">Gestos</h3>
+<button type="button" class="bg-gradient-primary text-on-primary hover:shadow-[0_0_20px_rgba(231,191,153,0.2)] transition-all py-2 px-6 rounded-lg font-label text-sm font-semibold flex items-center justify-center gap-2" onclick="openGestureModal()">
+<span class="material-symbols-outlined text-[18px]">add</span>
+Agregar
+</button>
+</div>
+<div class="flex flex-col gap-4 py-4" id="gestureList">
+<div class="text-center py-10 text-secondary font-body">Cargando...</div>
+</div>
+<div class="bg-surface-container-lowest rounded-lg p-6 ghost-border mt-4">
+<h4 class="font-headline text-lg text-on-surface mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">assignment</span>
+Guía de Gestos
+</h4>
+<p class="font-body text-sm text-secondary mb-4">
+Los <strong class="text-on-surface">gestos predefinidos</strong> se detectan automáticamente. Solo selecciona el tipo de gesto que quieres usar.
+</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-body text-sm text-on-surface">
+<div>✌️ <strong class="text-primary-fixed">Paz</strong>: Índice + medio arriba</div>
+<div>✊ <strong class="text-primary-fixed">Puño</strong>: Mano cerrada</div>
+<div>✋ <strong class="text-primary-fixed">Mano abierta</strong>: 5 dedos</div>
+<div>👍 <strong class="text-primary-fixed">Tres</strong>: Índice + medio + anular</div>
+<div>☝️ <strong class="text-primary-fixed">Apuntar</strong>: Solo índice</div>
+</div>
+</div>
+</div>
+</main>
+
+<div class="modal-overlay" id="configModal">
+<div class="bg-surface-container-low rounded-xl p-8 ghost-border w-[90%] max-w-lg max-h-[90vh] overflow-y-auto">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline text-xl font-semibold text-on-surface">Editar Configuración</h3>
+<button class="text-secondary hover:text-error text-2xl" onclick="closeConfigModal()">&times;</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="font-label text-xs text-secondary tracking-wider uppercase">Tiempo de gesto (segundos)</label>
+<input class="w-full bg-surface-container-lowest border-0 rounded-md py-3 px-4 text-on-surface font-body focus:ring-1 focus:ring-primary/30 transition-all ghost-border" id="configGestureHold" type="number" step="0.1" value="1.0"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label text-xs text-secondary tracking-wider uppercase">Tiempo de cooldown (segundos)</label>
+<input class="w-full bg-surface-container-lowest border-0 rounded-md py-3 px-4 text-on-surface font-body focus:ring-1 focus:ring-primary/30 transition-all ghost-border" id="configCooldownTime" type="number" step="0.1" value="1.5"/>
+</div>
+</div>
+<div class="flex gap-4 mt-6">
+<button class="flex-1 bg-surface-container-lowest text-secondary hover:bg-secondary/20 py-3 px-6 rounded-lg font-label uppercase tracking-widest text-sm" onclick="closeConfigModal()">Cancelar</button>
+<button class="flex-1 bg-gradient-primary text-on-primary py-3 px-6 rounded-lg font-label uppercase tracking-widest text-sm font-semibold" onclick="saveConfig()">Guardar</button>
+</div>
+</div>
+</div>
+
+<div class="modal-overlay" id="gestureModal">
+<div class="bg-surface-container-low rounded-xl p-8 ghost-border w-[90%] max-w-lg max-h-[90vh] overflow-y-auto">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline text-xl font-semibold text-on-surface" id="gestureModalTitle">Nuevo Gesto</h3>
+<button class="text-secondary hover:text-error text-2xl" onclick="closeGestureModal()">&times;</button>
+</div>
+<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-2">
+<label class="font-label text-xs text-secondary tracking-wider uppercase">Nombre del gesto</label>
+<input class="w-full bg-surface-container-lowest border-0 rounded-md py-3 px-4 text-on-surface font-body focus:ring-1 focus:ring-primary/30 transition-all ghost-border" id="gestureName" type="text" placeholder="Mi captura"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label text-xs text-secondary tracking-wider uppercase">Tipo de gesto</label>
+<select class="w-full bg-surface-container-lowest border-0 rounded-md py-3 px-4 text-on-surface font-body focus:ring-1 focus:ring-primary/30 transition-all ghost-border" id="gestureType">
+<option value="peace_sign">✌️ Paz - Índice y medio arriba</option>
+<option value="fist">✊ Puño - Mano cerrada</option>
+<option value="open_hand">✋ Mano abierta - 5 dedos</option>
+<option value="three_fingers">👍 Tres dedos - Índice, medio y anular</option>
+<option value="pointing_up">☝️ Apuntar - Solo índice</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label text-xs text-secondary tracking-wider uppercase">Acción</label>
+<select class="w-full bg-surface-container-lowest border-0 rounded-md py-3 px-4 text-on-surface font-body focus:ring-1 focus:ring-primary/30 transition-all ghost-border" id="gestureAction" onchange="toggleShortcutField()">
+<option value="screenshot">📸 Captura de Pantalla</option>
+<option value="keyboard">⌨️ Atajo de Teclado</option>
+</select>
+</div>
+<div class="flex flex-col gap-2" id="shortcutGroup" style="display: none;">
+<label class="font-label text-xs text-secondary tracking-wider uppercase">Atajo de teclado</label>
+<select class="w-full bg-surface-container-lowest border-0 rounded-md py-3 px-4 text-on-surface font-body focus:ring-1 focus:ring-primary/30 transition-all ghost-border" id="gestureShortcut" onchange="updateShortcutFromPreset()">
+<option value="">-- Selecciona un atajo --</option>
+<option value="Print">📸 Captura (Print)</option>
+<option value="alt+F4">❌ Cerrar ventana (Alt+F4)</option>
+<option value="super+d">📦 Minimizar todo (Super+d)</option>
+<option value="super+l">🔒 Bloquear pantalla (Super+l)</option>
+<option value="alt+Tab">🔄 Cambiar ventana (Alt+Tab)</option>
+<option value="ctrl+alt+t">💻 Nueva terminal (Ctrl+Alt+T)</option>
+<option value="ctrl+t">📁 Nueva pestaña (Ctrl+T)</option>
+<option value="ctrl+w">❌ Cerrar pestaña (Ctrl+W)</option>
+<option value="ctrl+Tab">➡️ Siguiente pestaña (Ctrl+Tab)</option>
+<option value="ctrl+shift+Tab">⬅️ Pestaña anterior (Ctrl+Shift+Tab)</option>
+<option value="ctrl+c">📋 Copiar (Ctrl+C)</option>
+<option value="ctrl+v">📋 Pegar (Ctrl+V)</option>
+<option value="ctrl+z">↩️ Deshacer (Ctrl+Z)</option>
+<option value="ctrl+shift+z">↩️ Rehacer (Ctrl+Shift+Z)</option>
+<option value="ctrl+s">💾 Guardar (Ctrl+S)</option>
+<option value="F11">🖥️ Pantalla completa (F11)</option>
+<option value="F5">🔄 Actualizar (F5)</option>
+<option value="space">▶️ Play/Pausar (Espacio)</option>
+</select>
+<input class="w-full bg-surface-container-lowest border-0 rounded-md py-3 px-4 text-on-surface font-body focus:ring-1 focus:ring-primary/30 transition-all ghost-border mt-2" id="gestureShortcutCustom" type="text" placeholder="O escribe manualmente: ctrl+shift+q"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label text-xs text-secondary tracking-wider uppercase">Tiempo requerido (segundos)</label>
+<input class="w-full bg-surface-container-lowest border-0 rounded-md py-3 px-4 text-on-surface font-body focus:ring-1 focus:ring-primary/30 transition-all ghost-border" id="gestureRequiredTime" type="number" step="0.1" value="1.0"/>
+</div>
+</div>
+<div class="flex gap-4 mt-6">
+<button class="flex-1 bg-surface-container-lowest text-secondary hover:bg-secondary/20 py-3 px-6 rounded-lg font-label uppercase tracking-widest text-sm" onclick="closeGestureModal()">Cancelar</button>
+<button class="flex-1 bg-gradient-primary text-on-primary py-3 px-6 rounded-lg font-label uppercase tracking-widest text-sm font-semibold" onclick="saveGesture()">Guardar</button>
+</div>
+</div>
+</div>
+
+<script>
+const API = '';
+let currentGestures = [];
+let editingGesture = null;
+
+async function apiRequest(path, options = {}) {
+    try {
+        const response = await fetch(API + path, {
+            headers: { 'Content-Type': 'application/json' },
+            ...options
+        });
+        return await response.json();
+    } catch (error) {
+        console.error('API Error:', error);
+        return null;
+    }
+}
+
+async function loadStatus() {
+    const status = await apiRequest('/api/status');
+    const badge = document.getElementById('statusBadge');
+    const dot = document.getElementById('statusDot');
+    const text = document.getElementById('statusText');
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    
+    if (status?.running) {
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]';
+        text.textContent = 'Ejecutando';
+        text.className = 'font-label text-sm tracking-widest uppercase text-green-500';
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+    } else {
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-error shadow-[0_0_10px_#ffb4ab]';
+        text.textContent = 'Detenido';
+        text.className = 'font-label text-sm tracking-widest uppercase text-error';
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+    }
+    await checkX11();
+}
+
+async function checkX11() {
+    const status = await apiRequest('/api/x11-status');
+    const warning = document.getElementById('x11Warning');
+    if (status && !status.accessible) {
+        warning.style.display = 'flex';
+    } else {
+        warning.style.display = 'none';
+    }
+}
+
+async function startSystem() {
+    const btn = document.getElementById('startBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Iniciando...';
+    await apiRequest('/api/start', { method: 'POST' });
+    await loadStatus();
+    btn.innerHTML = '<span class="material-symbols-outlined">play_arrow</span> Iniciar';
+}
+
+async function stopSystem() {
+    const btn = document.getElementById('stopBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Deteniendo...';
+    await apiRequest('/api/stop', { method: 'POST' });
+    await loadStatus();
+    btn.innerHTML = '<span class="material-symbols-outlined">stop</span> Detener';
+}
+
+async function loadConfig() {
+    const config = await apiRequest('/api/config');
+    if (config) {
+        document.getElementById('gestureHold').value = config.gesture_hold_seconds;
+        document.getElementById('cooldownTime').value = config.cooldown_seconds;
+    }
+}
+
+async function loadGestures() {
+    currentGestures = await apiRequest('/api/gestures') || [];
+    const list = document.getElementById('gestureList');
+    
+    if (currentGestures.length === 0) {
+        list.innerHTML = '<div class="text-center py-10 text-secondary font-body">No hay gestos configurados</div>';
+        return;
+    }
+    
+    const gestureNames = {
+        "peace_sign": "✌️ Paz",
+        "fist": "✊ Puño",
+        "open_hand": "✋ Mano abierta",
+        "three_fingers": "👍 Tres dedos",
+        "pointing_up": "☝️ Apuntar"
+    };
+    
+    list.innerHTML = currentGestures.map(g => `
+        <div class="flex justify-between items-center p-4 bg-surface-container-lowest rounded-lg ghost-border">
+            <div class="flex-1">
+                <div class="font-body font-semibold text-on-surface">${g.name}</div>
+                <div class="font-body text-sm text-secondary">
+                    ${gestureNames[g.gesture_type] || g.gesture_type} | 
+                    ${g.required_hold_seconds}s | 
+                    ${g.action === 'screenshot' ? '📸 Captura' : '⌨️ ' + (g.shortcut || '')} | 
+                    ${g.enabled ? 'Activo' : 'Inactivo'}
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="toggle ${g.enabled ? 'active' : ''}" onclick="toggleGesture('${g.name}')"></div>
+                <button class="bg-surface-container-low text-secondary hover:text-primary py-2 px-3 rounded-md text-sm" onclick="editGesture('${g.name}')">
+                    <span class="material-symbols-outlined text-[18px]">edit</span>
+                </button>
+                <button class="bg-surface-container-low text-error hover:bg-error/20 py-2 px-3 rounded-md text-sm" onclick="deleteGesture('${g.name}')">
+                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function openConfigModal() {
+    document.getElementById('configGestureHold').value = document.getElementById('gestureHold').value;
+    document.getElementById('configCooldownTime').value = document.getElementById('cooldownTime').value;
+    document.getElementById('configModal').classList.add('active');
+}
+
+function closeConfigModal() {
+    document.getElementById('configModal').classList.remove('active');
+}
+
+async function saveConfig() {
+    const config = {
+        gesture_hold_seconds: parseFloat(document.getElementById('configGestureHold').value),
+        cooldown_seconds: parseFloat(document.getElementById('configCooldownTime').value),
+        gestures: currentGestures
+    };
+    
+    await apiRequest('/api/config', {
+        method: 'POST',
+        body: JSON.stringify(config)
+    });
+    
+    closeConfigModal();
+    await loadConfig();
+}
+
+function openGestureModal(gesture = null) {
+    editingGesture = gesture;
+    document.getElementById('gestureModalTitle').textContent = gesture ? 'Editar Gesto' : 'Nuevo Gesto';
+    document.getElementById('gestureName').value = gesture?.name || '';
+    document.getElementById('gestureName').disabled = !!gesture;
+    document.getElementById('gestureType').value = gesture?.gesture_type || 'peace_sign';
+    document.getElementById('gestureAction').value = gesture?.action || 'screenshot';
+    document.getElementById('gestureShortcut').value = gesture?.shortcut || '';
+    document.getElementById('gestureShortcutCustom').value = gesture?.shortcut || '';
+    document.getElementById('gestureRequiredTime').value = gesture?.required_hold_seconds || 1.0;
+    document.getElementById('gestureModal').classList.add('active');
+    toggleShortcutField();
+}
+
+function closeGestureModal() {
+    document.getElementById('gestureModal').classList.remove('active');
+    editingGesture = null;
+}
+
+function editGesture(name) {
+    const gesture = currentGestures.find(g => g.name === name);
+    if (gesture) openGestureModal(gesture);
+}
+
+function toggleShortcutField() {
+    const action = document.getElementById('gestureAction').value;
+    const shortcutGroup = document.getElementById('shortcutGroup');
+    shortcutGroup.style.display = action === 'keyboard' ? 'flex' : 'none';
+}
+
+function updateShortcutFromPreset() {
+    const select = document.getElementById('gestureShortcut');
+    const custom = document.getElementById('gestureShortcutCustom');
+    if (select.value) {
+        custom.value = select.value;
+    }
+}
+
+async function saveGesture() {
+    const action = document.getElementById('gestureAction').value;
+    const shortcutSelect = document.getElementById('gestureShortcut');
+    const shortcutCustom = document.getElementById('gestureShortcutCustom');
+    const shortcut = action === 'keyboard' ? (shortcutCustom.value || shortcutSelect.value) : null;
+    
+    const gesture = {
+        name: document.getElementById('gestureName').value,
+        gesture_type: document.getElementById('gestureType').value,
+        required_hold_seconds: parseFloat(document.getElementById('gestureRequiredTime').value),
+        enabled: true,
+        action: action,
+        shortcut: shortcut
+    };
+    
+    await apiRequest('/api/gestures', {
+        method: 'POST',
+        body: JSON.stringify(gesture)
+    });
+    
+    closeGestureModal();
+    await loadGestures();
+}
+
+async function toggleGesture(name) {
+    const gesture = currentGestures.find(g => g.name === name);
+    if (gesture) {
+        gesture.enabled = !gesture.enabled;
+        await apiRequest('/api/gestures', {
+            method: 'POST',
+            body: JSON.stringify(gesture)
+        });
+        await loadGestures();
+    }
+}
+
+async function deleteGesture(name) {
+    if (confirm(`¿Eliminar el gesto ${name}?`)) {
+        await apiRequest('/api/gestures/' + name, { method: 'DELETE' });
+        await loadGestures();
+    }
+}
+
+async function init() {
+    await loadStatus();
+    await loadConfig();
+    await loadGestures();
+    setInterval(loadStatus, 5000);
+}
+
+init();
+</script>
+</body>
+</html>

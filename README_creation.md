@@ -45,7 +45,6 @@ Una vez tengas la información, genera EXCLUSIVAMENTE el código Markdown siguie
 | Android (ARM64) | `[Versión]` | `[Versión]` |
 
 * **Docs:** [Enlace a documentación]
-* **Website:** [Enlace a web]
 
 ## Introducción
 

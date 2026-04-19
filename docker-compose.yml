@@ -1,7 +1,22 @@
 version: '3.8'
 
 services:
-  gesture-vision:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: gesture-vision-api
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+      - ./api/static:/app/static
+      - ./data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  main:
     build: .
     container_name: gesture-vision
     network_mode: host
@@ -10,8 +25,9 @@ services:
       - DISPLAY=${DISPLAY}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - .:/app
-      - ./capturas:/app/capturas
+      - /home/edoruin/Desktop/GestureVision:/app
+      - /home/edoruin/Desktop/GestureVision/capturas:/app/capturas
+      - /home/edoruin/Desktop/GestureVision/data:/app/data
 
     devices:
       - /dev/video0:/dev/video0
