@@ -25,9 +25,9 @@ services:
       - DISPLAY=${DISPLAY}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - /home/edoruin/Desktop/GestureVision:/app
-      - /home/edoruin/Desktop/GestureVision/capturas:/app/capturas
-      - /home/edoruin/Desktop/GestureVision/data:/app/data
+      - .:/app
+      - ./capturas:/app/capturas
+      - ./data:/app/data
 
     devices:
       - /dev/video0:/dev/video0

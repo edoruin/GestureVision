@@ -40,8 +40,8 @@ dev = [
 package-dir = {"" = "src"}
 
 [project.urls]
-"Homepage" = "https://github.com/yourusername/gesturevision"
-"Bug Tracker" = "https://github.com/yourusername/gesturevision/issues"
+"Homepage" = "https://github.com/edoruin/GestureVision"
+"Bug Tracker" = "https://github.com/edoruin/GestureVision/issues"
 
 [project.scripts]
 gesturevision-start = "gesturevision.cli:main"
