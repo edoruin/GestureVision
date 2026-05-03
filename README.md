@@ -10,7 +10,7 @@
 
 | Branch | Version | Status |
 | :--- | :--- | :--- |
-| `master` | `0.3.0` | ![passing](https://img.shields.io/badge/build-passing-brightgreen) |
+| `master` | `0.3.2` | ![passing](https://img.shields.io/badge/build-passing-brightgreen) |
 
 | Platform | Python | System Dependencies |
 | :--- | :--- | :--- |
